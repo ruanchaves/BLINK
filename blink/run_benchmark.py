@@ -7,7 +7,7 @@ import blink.candidate_ranking.utils as utils
 DATASETS = [
     {
         "name": "AIDA-YAGO2 testa",
-        "filename": "data/BLINK_benchmark/AIDA-YAGO2_testa.jsonl",
+        "filename": "data/BLINK_benchmark/toy.jsonl",
     },
     # {
     #     "name": "AIDA-YAGO2 testb",
