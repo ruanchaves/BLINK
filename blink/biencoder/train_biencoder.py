@@ -58,7 +58,8 @@ def evaluate(
 
     for step, batch in enumerate(iter_):
         batch = tuple(t.to(device) for t in batch)
-        context_input, candidate_input, _, _ = batch
+        # context_input, candidate_input, _, _ = batch
+        context_input, candidate_input, _ = batch
         with torch.no_grad():
             eval_loss, logits = reranker(context_input, candidate_input)
 
@@ -226,7 +227,8 @@ def main(params):
 
         for step, batch in enumerate(iter_):
             batch = tuple(t.to(device) for t in batch)
-            context_input, candidate_input, _, _ = batch
+            # context_input, candidate_input, _, _ = batch
+            context_input, candidate_input, _ = batch
             loss, _ = reranker(context_input, candidate_input)
 
             # if n_gpu > 1:
