@@ -303,12 +303,16 @@ def main(params):
 
 
 if __name__ == "__main__":
-    parser = BlinkParser(add_model_args=True)
-    parser.add_training_args()
+    if not sys.argv[1].endswith('.json'):
+        parser = BlinkParser(add_model_args=True)
+        parser.add_training_args()
 
-    # args = argparse.Namespace(**params)
-    args = parser.parse_args()
-    print(args)
+        # args = argparse.Namespace(**params)
+        args = parser.parse_args()
+        print(args)
 
-    params = args.__dict__
+        params = args.__dict__
+    else:
+        with open(sys.argv[1],'r') as f:
+            params = json.load(f)
     main(params)

@@ -4,6 +4,8 @@ import prettytable
 import blink.main_dense as main_dense
 import blink.candidate_ranking.utils as utils
 
+import timeit
+
 DATASETS = [
     {
         "name": "AIDA-YAGO2 testa",

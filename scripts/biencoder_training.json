@@ -1,0 +1,20 @@
+{
+    "context_key": "",
+    "data_path": "",
+    "debug": true,
+    "eval_batch_size": 8,
+    "eval_interval": 30,
+    "evaluate": true,
+    "gradient_accumulation_steps": 1,
+    "max_cand_length": 128,
+    "max_context_length": 128,
+    "max_grad_norm": 128,
+    "num_train_epochs": 1,
+    "output_path": "",
+    "path_to_model": "",
+    "print_interval": 100,
+    "seed": 1,
+    "shuffle": true,
+    "silent": false,
+    "train_batch_size": 8
+}
