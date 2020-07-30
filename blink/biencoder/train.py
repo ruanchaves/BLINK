@@ -29,7 +29,7 @@ def create_logger(filename, name):
     logger.addHandler(ch)
     return logger
 
-logger = create_logger(os.environ.get('LOGFILE', 'blink.log'))
+glogger = create_logger(os.environ.get('LOGFILE', 'blink.log'), __name__)
 
 class Telegram_Driver(object):
 
