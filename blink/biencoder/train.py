@@ -29,8 +29,6 @@ def create_logger(filename, name):
     logger.addHandler(ch)
     return logger
 
-glogger = create_logger(os.environ.get('LOGFILE', 'blink.log'), __name__)
-
 class Telegram_Driver(object):
 
     def __init__(self, token=None, chat=None, path=None):
@@ -53,7 +51,7 @@ class Telegram_Driver(object):
         subprocess.Popen(command)
 
 
-def execute_command(system_command, **kwargs):
+def execute_command(system_command, logger, **kwargs):
     """Execute a system command, passing STDOUT and STDERR to logger.
 
     Source: https://stackoverflow.com/a/4417735/2063031
@@ -72,10 +70,13 @@ def execute_command(system_command, **kwargs):
     if return_code:
         raise subprocess.CalledProcessError(return_code, system_command)
 
-if __name__ == '__main__':
+def main():
+    logger = create_logger(os.environ.get('LOGFILE', 'blink.log'), __name__)
+
     telegram = None
     telegram_chat = os.environ.get('TELEGRAM_CHAT', None)
     telegram_token = os.environ.get('TELEGRAM_TOKEN', None)
+
     if telegram_chat and telegram_token:
         telegram = Telegram_Driver(token=telegram_token, chat=telegram_chat, path='./telegram')
 
@@ -83,7 +84,10 @@ if __name__ == '__main__':
         telegram.send_message('python train_biencoder.py config.json -- Start')
 
     cmd = "env CUDA_VISIBLE_DEVICES={0} python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES'))
-    execute_command(cmd)
+    execute_command(cmd, logger)
     
     if telegram:
         telegram.send_message('python train_biencoder.py config.json -- End')
+
+if __name__ == '__main__':
+    main()
