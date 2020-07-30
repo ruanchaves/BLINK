@@ -318,7 +318,4 @@ if __name__ == "__main__":
     else:
         with open(sys.argv[1],'r') as f:
             params = json.load(f)
-            pathlib.Path(params['output_path']).mkdir(parents=True, exist_ok=True)
-        with open(os.path.join(params['output_path'],'config.json'),'w') as f:
-            json.dump(params, f)
     main(params)

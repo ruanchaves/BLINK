@@ -2,13 +2,16 @@ import logging
 import subprocess
 import shlex 
 import os
+import pathlib
+import json
 
-## Runs the command "python train_biencoder.py config.json".
+## Runs the command "python train_biencoder.py <CONFIG_FILE>".
 ## env variables:
-# LOGFILE (defaults to blink.log)
+# CONFIG_FILE ( defaults to config.json )
+# TELEGRAM_PATH (optional, defaults to ./telegram )
 # TELEGRAM_CHAT (optional)
 # TELEGRAM_TOKEN (optional)
-# CUDA_VISIBLE_DEVICES
+# CUDA_VISIBLE_DEVICES ( defaults to None )
 
 
 def create_logger(filename, name):
@@ -71,23 +74,35 @@ def execute_command(system_command, logger, **kwargs):
         raise subprocess.CalledProcessError(return_code, system_command)
 
 def main():
-    logger = create_logger(os.environ.get('LOGFILE', 'blink.log'), __name__)
+    config_path = os.environ.get('CONFIG_FILE', 'config.json')
+    with open(config_path,'r') as f:
+        params = json.load(f)
+
+    pathlib.Path(params['output_path']).mkdir(parents=True, exist_ok=True)
+
+    logfile_path = os.path.join(params['output_path'], 'model.log')
+
+    logger = create_logger(logfile_path, __name__)
+
+    with open(os.path.join(params['output_path'], 'config.json'),'w') as f:
+        json.dump(params, f)
 
     telegram = None
     telegram_chat = os.environ.get('TELEGRAM_CHAT', None)
     telegram_token = os.environ.get('TELEGRAM_TOKEN', None)
 
     if telegram_chat and telegram_token:
-        telegram = Telegram_Driver(token=telegram_token, chat=telegram_chat, path='./telegram')
+        telegram = Telegram_Driver(token=telegram_token, chat=telegram_chat, path=os.environ.get('TELEGRAM_PATH', './telegram'))
 
     if telegram:
-        telegram.send_message('python train_biencoder.py config.json -- Start')
+        telegram.send_message('START: python train_biencoder.py. params: ')
+        telegram.send_message(json.dumps(params, indent=4, sort_keys=True))
 
     cmd = "env CUDA_VISIBLE_DEVICES={0} python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES'))
     execute_command(cmd, logger)
     
     if telegram:
-        telegram.send_message('python train_biencoder.py config.json -- End')
+        telegram.send_message('END: python train_biencoder.py.')
 
 if __name__ == '__main__':
     main()
