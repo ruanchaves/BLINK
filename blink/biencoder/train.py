@@ -4,6 +4,7 @@ import shlex
 import os
 import pathlib
 import json
+import sys
 
 ## Runs the command "python train_biencoder.py <CONFIG_FILE>".
 ## env variables:
@@ -98,9 +99,16 @@ def main():
         telegram.send_message('START: python train_biencoder.py. params: ')
         telegram.send_message(json.dumps(params, indent=4, sort_keys=True))
 
-    cmd = "env CUDA_VISIBLE_DEVICES={0} PYTHONPATH=. python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES'))
-    execute_command(cmd, logger)
-    
+    try:
+        cmd = "env CUDA_VISIBLE_DEVICES={0} PYTHONPATH=. python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES'))
+        execute_command(cmd, logger)
+    except Exception as e:
+        logger.error(e)
+        if telegram:
+            message = "EXCEPTION: {0}".format(e)
+            telegram.send_message(message)
+        sys.exit(1)
+
     if telegram:
         telegram.send_message('END: python train_biencoder.py.')
 
