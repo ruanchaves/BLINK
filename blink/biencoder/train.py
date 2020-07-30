@@ -98,7 +98,7 @@ def main():
         telegram.send_message('START: python train_biencoder.py. params: ')
         telegram.send_message(json.dumps(params, indent=4, sort_keys=True))
 
-    cmd = "env CUDA_VISIBLE_DEVICES={0} python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES'))
+    cmd = "env CUDA_VISIBLE_DEVICES={0} PYTHONPATH=. python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES'))
     execute_command(cmd, logger)
     
     if telegram:
