@@ -10,7 +10,6 @@ import os
 # TELEGRAM_TOKEN (optional)
 # CUDA_VISIBLE_DEVICES
 
-logger = create_logger(os.environ.get('LOGFILE', 'blink.log'))
 
 def create_logger(filename, name):
     obj_1 = "{\"time\":\"%(asctime)s\", \"name\": \"%(name)s\", \"level\": \"%(levelname)s\" }"
@@ -29,6 +28,8 @@ def create_logger(filename, name):
     logger.addHandler(fh)
     logger.addHandler(ch)
     return logger
+
+logger = create_logger(os.environ.get('LOGFILE', 'blink.log'))
 
 class Telegram_Driver(object):
 
