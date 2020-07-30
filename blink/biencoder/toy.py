@@ -23,8 +23,7 @@ def generate_toy_data(n_samples=1000, context_length=200, dump_source=None):
             "mention": context_sample['title'],
             "label": context_sample['text'],
             "label_title": context_sample['title'],
-            "label_id": random.randint(0,1e+6),
-            "src": ["toy dataset"]
+            "label_id": random.randint(0,1e+6)
         }
         records.append(record)
     return records

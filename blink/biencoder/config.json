@@ -15,7 +15,7 @@
 "seed": 12345,
 "shuffle": true,
 "silent": false,
-"train_batch_size": 128,
+"train_batch_size": 32,
 "type_optimization": "all",
 "warmup_proportion": 0.1, 
 "no_cuda": false,
