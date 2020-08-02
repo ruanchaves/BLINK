@@ -55,7 +55,7 @@ class Telegram_Driver(object):
         subprocess.Popen(command)
 
 
-def execute_command(system_command, logger, **kwargs):
+def execute_command(system_command, env, logger, **kwargs):
     """Execute a system command, passing STDOUT and STDERR to logger.
 
     Source: https://stackoverflow.com/a/4417735/2063031
@@ -66,6 +66,7 @@ def execute_command(system_command, logger, **kwargs):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         universal_newlines=True,
+        env=env,
         **kwargs)
     for stdout_line in iter(popen.stdout.readline, ""):
         logger.debug(stdout_line.strip())
@@ -100,8 +101,12 @@ def main():
         telegram.send_message(json.dumps(params, indent=4, sort_keys=True))
 
     try:
-        cmd = "CUDA_VISIBLE_DEVICES={0} PYTHONPATH=. python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES', 0))
-        execute_command(cmd, logger)
+        env = {
+            "CUDA_VISIBLE_DEVICES": os.environ.get('CUDA_VISIBLE_DEVICES', 0),
+            "PYTHONPATH": "."
+        }
+        cmd = "python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES', 0))
+        execute_command(cmd, env, logger)
     except Exception as e:
         logger.error(e)
         if telegram:
