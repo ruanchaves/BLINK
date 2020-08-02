@@ -100,7 +100,7 @@ def main():
         telegram.send_message(json.dumps(params, indent=4, sort_keys=True))
 
     try:
-        cmd = "env CUDA_VISIBLE_DEVICES={0} PYTHONPATH=. python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES', 0))
+        cmd = "CUDA_VISIBLE_DEVICES={0} PYTHONPATH=. python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES', 0))
         execute_command(cmd, logger)
     except Exception as e:
         logger.error(e)

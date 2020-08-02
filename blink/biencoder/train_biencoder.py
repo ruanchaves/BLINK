@@ -306,6 +306,11 @@ def main(params):
 
 
 if __name__ == "__main__":
+
+    #cuda info
+    device_name = torch.cuda.get_device_name(torch.cuda.current_device())
+    print("current device name: {0}".format(device_name))
+
     if not sys.argv[1].endswith('.json'):
         parser = BlinkParser(add_model_args=True)
         parser.add_training_args()
