@@ -102,7 +102,7 @@ def main():
 
     try:
         env = {
-            "CUDA_VISIBLE_DEVICES": os.environ.get('CUDA_VISIBLE_DEVICES', 0),
+            "CUDA_VISIBLE_DEVICES": os.environ.get('CUDA_VISIBLE_DEVICES', "0"),
             "PYTHONPATH": "."
         }
         cmd = "python train_biencoder.py config.json".format(os.environ.get('CUDA_VISIBLE_DEVICES', 0))
